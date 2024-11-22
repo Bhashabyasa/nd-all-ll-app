@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import NewTopHomeNextBar from '../../../components/NewTopHomeNextBar/NewTopHomeNextBar';
 import NewBottomHomeNextBar from '../../../components/NewBottomHomeNextBar/NewBottomHomeNextBar';
 import { getContentList } from '../../../utils/Const/Const';
@@ -15,10 +15,13 @@ import AppFooter from '../../../components/AppFooter/AppFooter';
 
 function StartLearn() {
   const location = useLocation();
-  const IsSentenceFromParams = getParameter('sentence', location.search);
 
-  const myCurrectLanguage = getParameter('language', location.search);
-  const navigate = useNavigate();
+  const IsSentenceFromParams = getParameter('sentence', location.search);
+  const IsLangFromParams = getParameter('lang', location.search);
+
+  console.log(IsSentenceFromParams);
+  console.log(IsLangFromParams);
+
   const [isAudioPlay, setIsAudioPlay] = useState(true);
   const [temp_audio, set_temp_audio] = useState(null);
   const [flag, setFlag] = useState(true);
@@ -31,6 +34,15 @@ function StartLearn() {
       localStorage.setItem('apphomelevel', 'Word');
     }
   }, [IsSentenceFromParams]);
+
+  useEffect(() => {
+    // Set 'apphomelang' only if a valid language parameter is provided
+    if (IsLangFromParams) {
+      console.log('language changed');
+      localStorage.setItem('apphomelang', IsLangFromParams);
+    }
+  }, [IsLangFromParams]);
+
 
   const playAudio = () => {
     interactCall("playAudio", "startlearn", "DT", "play");
@@ -68,16 +80,27 @@ function StartLearn() {
   }, [temp_audio]);
 
   const [sel_lang, set_sel_lang] = useState(
-    localStorage.getItem('apphomelang')
-      ? localStorage.getItem('apphomelang')
-      : 'en'
+    IsLangFromParams
+      ? IsLangFromParams
+      : localStorage.getItem('apphomelang') ? localStorage.getItem('apphomelang') : 'en'
   );
 
+  // const [sel_lang, set_sel_lang] = useState(
+  //   localStorage.getItem('apphomelang')
+  //     ? localStorage.getItem('apphomelang')
+  //     : 'en'
+  // );
+
+
+  const levelfromparams = IsSentenceFromParams === 'true' ? 'Sentence' : 'Word';
   const [sel_level, set_sel_level] = useState(
-    localStorage.getItem('apphomelevel')
+    levelfromparams ? levelfromparams : localStorage.getItem('apphomelevel')
       ? localStorage.getItem('apphomelevel')
       : 'Word'
   );
+  // const [sel_level, set_sel_level] = useState(() => {
+  //   return levelfromparams || localStorage.getItem('apphomelevel') || 'Word';
+  // });
 
   const [apphomelevel, set_apphomelevel] = useState(
     localStorage.getItem('apphomelevel')
@@ -124,7 +147,8 @@ function StartLearn() {
     set_content_id(getitem);
     localStorage.setItem(
       'contentText',
-      newTempContent[getitem].content[localStorage.getItem('apphomelang')].text
+      newTempContent[getitem].content[IsLangFromParams || localStorage.getItem('apphomelang')].text
+      // newTempContent[getitem].content[localStorage.getItem('apphomelang')].text
     );
   };
 
@@ -204,7 +228,8 @@ function StartLearn() {
     const myCurrectLanguage = getParameter('language', location.search);
     return (
       <>
-        {content != null && content[sel_lang] ? (
+        {content != null && content[IsLangFromParams || sel_lang] ? (
+        // {content != null && content[sel_lang] ? (
           <div className="">
             <div className="row">
               <div className="col s12 m2 l3"></div>
@@ -220,7 +245,8 @@ function StartLearn() {
                     <br />
                     <img className="image_class" src={content?.image} />
                     <div className="content_text_div">
-                      {content[sel_lang]?.text ? content[sel_lang]?.text : ''}
+                      {content[IsLangFromParams ? IsLangFromParams : sel_lang]?.text ? content[IsLangFromParams ? IsLangFromParams : sel_lang]?.text : ''}
+                      {/* {content[sel_lang]?.text ? content[sel_lang]?.text : ''} */}
                     </div>
                     {sel_lang !== myCurrectLanguage ? (
                       <div className="content_text_div">
