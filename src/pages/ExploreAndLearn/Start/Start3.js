@@ -23,10 +23,10 @@ function Start3() {
   const myCurrectLanguage = getParameter('language', location.search) || process.env.REACT_APP_LANGUAGE;
   const [sel_lang, set_sel_lang] = useState(myCurrectLanguage);
   const [sel_level, set_sel_level] = useState(
-    // localStorage.getItem('apphomelevel')
-    //   ? localStorage.getItem('apphomelevel')
-    //   : 'Word'
-    'Word'
+    localStorage.getItem('apphomelevel')
+      ? localStorage.getItem('apphomelevel')
+      : 'Word'
+    // 'Word'
   );
   const [sel_cource, set_sel_cource] = useState(
     localStorage.getItem('apphomecource')
@@ -93,13 +93,14 @@ function Start3() {
           let tabShowS = val && val.find(val => val === 'Sentence');
           let tabShowP = val && val.find(val => val === 'Paragraph');
           // console.log(tabShowP);
-
           setTabShow(tabShowWord);
           setTabShowSentence(tabShowS);
           setTabShowPara(tabShowP);
 
           localStorage.setItem('apphomelevel', tabShowWord);
-        })
+        }
+
+        )
         .catch(err => console.log(err));
     }
   };
@@ -125,9 +126,9 @@ function Start3() {
 
   // This is for language selection
 
-    function getLanguageConstants(languageCode) {
-      return lang_constants[languageCode] || lang_constants['en'];
-    }
+  function getLanguageConstants(languageCode) {
+    return lang_constants[languageCode] || lang_constants['en'];
+  }
 
 
   function showStart() {
@@ -157,7 +158,7 @@ function Start3() {
                             //window.location.reload();
                           }}
                         >
-                         {getLanguageConstants('en').HOME_TRY_IN}
+                          {getLanguageConstants('en').HOME_TRY_IN}
                         </div>
                       </div>
                       <div className="col s6">
@@ -201,7 +202,7 @@ function Start3() {
                         <div className="col s8">
                           <div className="learn_level_div_middle">
                             <font className="learn_title">
-                            {sel_lang === 'en' ? getLanguageConstants('en').COMMON_WORD : getLanguageConstants(myCurrectLanguage).COMMON_WORD}
+                              {sel_lang === 'en' ? getLanguageConstants('en').COMMON_WORD : getLanguageConstants(myCurrectLanguage).COMMON_WORD}
                             </font>
                             <br />
                             <font className="learn_sub_title">
@@ -221,7 +222,7 @@ function Start3() {
                     <Link
                       to={'/exploreandlearn/startlearn'}
                       onClick={() => {
-                        set_sel_level('Word');
+                        set_sel_level('Sentence');
                         localStorage.setItem('apphomelevel', 'Sentence');
                       }}
                     >
@@ -238,7 +239,7 @@ function Start3() {
                         <div className="col s8">
                           <div className="learn_level_div_middle">
                             <font className="learn_title">
-                            {sel_lang === 'en' ? getLanguageConstants('en').COMMON_SENTENCE : getLanguageConstants(myCurrectLanguage).COMMON_SENTENCE}
+                              {sel_lang === 'en' ? getLanguageConstants('en').COMMON_SENTENCE : getLanguageConstants(myCurrectLanguage).COMMON_SENTENCE}
                             </font>
                             <br />
                             <font className="learn_sub_title">
@@ -247,7 +248,7 @@ function Start3() {
                           </div>
                         </div>
                         <div className="col s2">
-                          <img src={learn_next} className="learn_next_img" alt="Start Learning"/>
+                          <img src={learn_next} className="learn_next_img" alt="Start Learning" />
                         </div>
                       </div>
                     </Link>
@@ -275,7 +276,7 @@ function Start3() {
                         <div className="col s8">
                           <div className="learn_level_div_middle">
                             <font className="learn_title">
-                            {sel_lang === 'en' ? getLanguageConstants('en').COMMON_PARAGRAPH : getLanguageConstants(myCurrectLanguage).COMMON_PARAGRAPH}
+                              {sel_lang === 'en' ? getLanguageConstants('en').COMMON_PARAGRAPH : getLanguageConstants(myCurrectLanguage).COMMON_PARAGRAPH}
                             </font>
                             <br />
                             <font className="learn_sub_title">
@@ -284,7 +285,7 @@ function Start3() {
                           </div>
                         </div>
                         <div className="col s2">
-                          <img src={learn_next} className="learn_next_img" alt="Start Learning"/>
+                          <img src={learn_next} className="learn_next_img" alt="Start Learning" />
                         </div>
                       </div>
                     </Link>
@@ -298,7 +299,7 @@ function Start3() {
           </div>
         </div>
         {hide_navFooter === 'false' ? (
-          <AppFooter hideNavigation={getParameter('hideNavigation', location.search)} selectedLanguage={getParameter('language', location.search)} source={getParameter('source', location.search)}/>
+          <AppFooter hideNavigation={getParameter('hideNavigation', location.search)} selectedLanguage={getParameter('language', location.search)} source={getParameter('source', location.search)} />
         ) : (
           <></>
         )}
