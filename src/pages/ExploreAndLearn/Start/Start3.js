@@ -93,23 +93,14 @@ function Start3() {
           let tabShowS = val && val.find(val => val === 'Sentence');
           let tabShowP = val && val.find(val => val === 'Paragraph');
           // console.log(tabShowP);
-
           setTabShow(tabShowWord);
           setTabShowSentence(tabShowS);
           setTabShowPara(tabShowP);
 
-          const params = new URLSearchParams(window.location.search);
-          const sentence = params.get('sentence');
+          localStorage.setItem('apphomelevel', tabShowWord);
+        }
 
-          // If sentence=true in the URL, trigger the action automatically
-          if (sentence === 'true') {
-            localStorage.setItem('apphomelevel', 'Sentence');
-          } else {
-            localStorage.setItem('apphomelevel', tabShowWord);
-
-          }
-
-        })
+        )
         .catch(err => console.log(err));
     }
   };
@@ -132,34 +123,6 @@ function Start3() {
       scroll_to_top('smooth');
     }
   }, [load_cnt]);
-
-  const [isSentenceTrue, setIsSentenceTrue] = useState(false);
-
-  // Use useEffect to check URL parameters and trigger logic automatically if needed
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const sentence = params.get('sentence');
-
-    // If sentence=true in the URL, trigger the action automatically
-    if (sentence === 'true') {
-      setIsSentenceTrue(true);
-      handleAction(); // Automatically trigger the action
-    }
-  }, []);
-
-  // Function that will be triggered based on conditions
-  const handleAction = () => {
-    set_sel_level('Sentence');
-    localStorage.setItem('apphomelevel', 'Sentence');
-    console.log('apphomelevel set to Sentence and Word selected');
-  };
-
-  // This will be triggered when the user clicks the link
-  const handleClick = () => {
-    if (!isSentenceTrue) {  // Only execute if the action hasn't been triggered automatically
-      handleAction(); // Trigger the same action when clicked
-    }
-  };
 
   // This is for language selection
 
@@ -258,7 +221,10 @@ function Start3() {
                   {tabShowSentece === 'Sentence' && (
                     <Link
                       to={'/exploreandlearn/startlearn'}
-                      onClick={handleClick}
+                      onClick={() => {
+                        set_sel_level('Sentence');
+                        localStorage.setItem('apphomelevel', 'Sentence');
+                      }}
                     >
                       <div className="learn_level_div">
                         <div className="col s2">
