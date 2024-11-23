@@ -33,11 +33,7 @@ export function getParameter(key, location) {
     const query = new URLSearchParams(location);
     return query.get(key);
   }
-  // if (key) {
-  //   const query = new URLSearchParams(window.location.search);
-  //   console.log(query.get(key));
-  //   return query.get(key);
-  // }
+  return null;
 }
 
 export function getLayout(url) {
@@ -82,9 +78,8 @@ export function compareArrays(arr1, arr2) {
   let words_result = [];
 
   // Iterate over each element and compare
-  for (var k in arr1){
-    if (arr2[k] == "" || arr2[k] == undefined)
-    {
+  for (var k in arr1) {
+    if (arr2[k] == "" || arr2[k] == undefined) {
       // Element not available on the same key
       words_result.push('-1');
     }
@@ -97,9 +92,8 @@ export function compareArrays(arr1, arr2) {
       words_result.push('0');
     }
   }
-  if (arr1.length < arr2.length)
-  {
-    for (let i = arr1.length; i < arr2.length; i++){
+  if (arr1.length < arr2.length) {
+    for (let i = arr1.length; i < arr2.length; i++) {
       words_result.push('-1');
     }
   }
