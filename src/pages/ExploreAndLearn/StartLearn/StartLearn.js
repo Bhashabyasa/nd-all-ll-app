@@ -79,28 +79,21 @@ function StartLearn() {
     learnAudio();
   }, [temp_audio]);
 
-  const [sel_lang, set_sel_lang] = useState(
-    IsLangFromParams
-      ? IsLangFromParams
-      : localStorage.getItem('apphomelang') ? localStorage.getItem('apphomelang') : 'en'
-  );
-
-  // const [sel_lang, set_sel_lang] = useState(
-  //   localStorage.getItem('apphomelang')
-  //     ? localStorage.getItem('apphomelang')
-  //     : 'en'
-  // );
+  const [sel_lang, set_sel_lang] = useState(() => {
+    if (IsLangFromParams !== null) {
+      return IsLangFromParams;
+    }
+    return localStorage.getItem('apphomelang') || 'en';
+  });
 
 
-  const levelfromparams = IsSentenceFromParams === 'true' ? 'Sentence' : 'Word';
-  const [sel_level, set_sel_level] = useState(
-    levelfromparams ? levelfromparams : localStorage.getItem('apphomelevel')
-      ? localStorage.getItem('apphomelevel')
-      : 'Word'
-  );
-  // const [sel_level, set_sel_level] = useState(() => {
-  //   return levelfromparams || localStorage.getItem('apphomelevel') || 'Word';
-  // });
+  const [sel_level, set_sel_level] = useState(() => {
+    if (IsSentenceFromParams !== null) {
+      return IsSentenceFromParams === 'true' ? 'Sentence' : 'Word';
+    }
+    return localStorage.getItem('apphomelevel') || 'Word';
+  });
+
 
   const [apphomelevel, set_apphomelevel] = useState(
     localStorage.getItem('apphomelevel')
@@ -131,11 +124,9 @@ function StartLearn() {
   const [content_id, set_content_id] = useState(0);
   const [hide_navFooter, set_hide_navFooter] = useState('false');
   const [load_cnt, set_load_cnt] = useState(0);
-  // const [content_list, setContent_list] = useState(null);
   const [newTempContent, setNewTempContent] = useState([]);
 
   const handleChangeWord = () => {
-    // Implement logic to select a new content
     let getitem = content_id;
     let old_getitem = getitem;
     while (old_getitem === getitem) {
@@ -147,8 +138,7 @@ function StartLearn() {
     set_content_id(getitem);
     localStorage.setItem(
       'contentText',
-      newTempContent[getitem].content[IsLangFromParams || localStorage.getItem('apphomelang')].text
-      // newTempContent[getitem].content[localStorage.getItem('apphomelang')].text
+      newTempContent[getitem].content[localStorage.getItem('apphomelang')].text
     );
   };
 
@@ -228,8 +218,7 @@ function StartLearn() {
     const myCurrectLanguage = getParameter('language', location.search);
     return (
       <>
-        {content != null && content[IsLangFromParams || sel_lang] ? (
-        // {content != null && content[sel_lang] ? (
+        {content != null && content[sel_lang] ? (
           <div className="">
             <div className="row">
               <div className="col s12 m2 l3"></div>
@@ -245,8 +234,7 @@ function StartLearn() {
                     <br />
                     <img className="image_class" src={content?.image} />
                     <div className="content_text_div">
-                      {content[IsLangFromParams ? IsLangFromParams : sel_lang]?.text ? content[IsLangFromParams ? IsLangFromParams : sel_lang]?.text : ''}
-                      {/* {content[sel_lang]?.text ? content[sel_lang]?.text : ''} */}
+                      {content[sel_lang]?.text ? content[sel_lang]?.text : ''}
                     </div>
                     {sel_lang !== myCurrectLanguage ? (
                       <div className="content_text_div">
