@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import new1word from '../../../assests/Images/Learn/new1word.png';
 import new2sentence from '../../../assests/Images/Learn/new2sentence.png';
@@ -14,25 +14,19 @@ import AppFooter from '../../../components/AppFooter/AppFooter';
 import axios from 'axios';
 
 function Start3() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [url, setUrl] = useState('');
   const [tabShow, setTabShow] = useState('');
   const [tabShowSentece, setTabShowSentence] = useState('');
   const [tabShowPara, setTabShowPara] = useState('');
+  const [load_cnt, set_load_cnt] = useState(0);
 
-  const location = useLocation();
   const myCurrectLanguage = getParameter('language', location.search) || process.env.REACT_APP_LANGUAGE;
   const [sel_lang, set_sel_lang] = useState(myCurrectLanguage);
-  const [sel_level, set_sel_level] = useState(
-    localStorage.getItem('apphomelevel')
-      ? localStorage.getItem('apphomelevel')
-      : 'Word'
-    // 'Word'
-  );
-  const [sel_cource, set_sel_cource] = useState(
-    localStorage.getItem('apphomecource')
-      ? localStorage.getItem('apphomecource')
-      : 'Listen & Speak'
-  );
+  const [sel_level, set_sel_level] = useState(localStorage.getItem('apphomelevel') ? localStorage.getItem('apphomelevel') : 'Word');
+  const [sel_cource, set_sel_cource] = useState(localStorage.getItem('apphomecource') ? localStorage.getItem('apphomecource') : 'Listen & Speak');
   const [hide_navFooter, set_hide_navFooter] = useState('false');
 
   useEffect(() => {
@@ -41,6 +35,7 @@ function Start3() {
     localStorage.setItem('URL', window.location.href);
     setUrl(url ? url : '');
   }, []);
+
   useEffect(() => {
     if (localStorage.getItem('apphomelang') === null) {
       localStorage.setItem('apphomelang', sel_lang);
@@ -67,7 +62,6 @@ function Start3() {
           let tabShowWord = val && val.find(val => val === 'Word');
           let tabShowS = val && val.find(val => val === 'Sentence');
           let tabShowP = val && val.find(val => val === 'Paragraph');
-          // console.log(tabShowP);
 
           setTabShow(tabShowWord);
           setTabShowSentence(tabShowS);
@@ -84,20 +78,46 @@ function Start3() {
           localStorage.setItem('contents', JSON.stringify(res.data));
 
           let data = JSON.parse(JSON.stringify(res.data));
-          let val =
-            data &&
-            Object.values(data).map(item => {
-              return item.type;
-            });
+          let val = data && Object.values(data).map(item => {
+            return item.type;
+          });
+
           let tabShowWord = val && val.find(val => val === 'Word');
           let tabShowS = val && val.find(val => val === 'Sentence');
           let tabShowP = val && val.find(val => val === 'Paragraph');
-          // console.log(tabShowP);
+
           setTabShow(tabShowWord);
           setTabShowSentence(tabShowS);
           setTabShowPara(tabShowP);
 
           localStorage.setItem('apphomelevel', tabShowWord);
+
+          const urlParams = new URLSearchParams(window.location.search);
+          const langFromUrl = urlParams.get("lang");
+          const sentenceFromUrl = urlParams.get("sentence");
+          console.log('First render : ', "langFromUrl : ", langFromUrl, ', sentenceFromUrl : ', sentenceFromUrl);
+
+          const contents = JSON.parse(localStorage.getItem('contents'));
+          console.log(contents);
+
+          if ((langFromUrl === "en" || langFromUrl === "kn") && sentenceFromUrl !== null && contents) {
+            console.log('here');
+
+            if (sentenceFromUrl === 'true') {
+              console.log('heresentence');
+              
+              localStorage.setItem('apphomelevel', 'Sentence');
+              set_sel_level('Sentence');
+            } else if (sentenceFromUrl === 'false') {
+              console.log('hereWord');
+              
+              localStorage.setItem('apphomelevel', 'Word');
+              set_sel_level('Word');
+            }
+            navigate("/exploreandlearn/startlearn");
+          } else {
+            console.error("Invalid URL parameters or missing localStorage data");
+          }
         }
 
         )
@@ -113,7 +133,7 @@ function Start3() {
     localStorage.setItem('apphomecource', sel_cource);
   }, [sel_cource]);
 
-  const [load_cnt, set_load_cnt] = useState(0);
+
   useEffect(() => {
     const showNavigationFooter = getParameter('hideNavigation', location.search);
     set_hide_navFooter(showNavigationFooter);

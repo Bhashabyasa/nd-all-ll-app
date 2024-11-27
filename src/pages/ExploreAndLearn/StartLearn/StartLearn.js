@@ -16,11 +16,11 @@ import AppFooter from '../../../components/AppFooter/AppFooter';
 function StartLearn() {
   const location = useLocation();
 
-  const IsSentenceFromParams = getParameter('sentence', location.search);
-  const IsLangFromParams = getParameter('lang', location.search);
-
-  console.log(IsSentenceFromParams);
-  console.log(IsLangFromParams);
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  const IsLangFromParams = urlParams.get("lang");
+  const IsSentenceFromParams = urlParams.get("sentence");
+  console.log('second render:', "IsLangFromParams : ", IsLangFromParams, ', IsSentenceFromParams : ', IsSentenceFromParams);
 
   const [isAudioPlay, setIsAudioPlay] = useState(true);
   const [temp_audio, set_temp_audio] = useState(null);
@@ -38,7 +38,6 @@ function StartLearn() {
   useEffect(() => {
     // Set 'apphomelang' only if a valid language parameter is provided
     if (IsLangFromParams) {
-      console.log('language changed');
       localStorage.setItem('apphomelang', IsLangFromParams);
     }
   }, [IsLangFromParams]);
@@ -121,6 +120,7 @@ function StartLearn() {
   );
 
   const [content, set_content] = useState(null);
+
   const [content_id, set_content_id] = useState(0);
   const [hide_navFooter, set_hide_navFooter] = useState('false');
   const [load_cnt, set_load_cnt] = useState(0);
