@@ -57,11 +57,11 @@ function Score() {
 
   const [temp_audio, set_temp_audio] = useState(null);
   const playAudio = () => {
-    interactCall("playAudio", "score","DT", "play");
+    interactCall("playAudio", "score", "DT", "play");
     set_temp_audio(new Audio(recordedAudio));
   };
   const pauseAudio = () => {
-    interactCall("pauseAudio", "score","DT", "pause");
+    interactCall("pauseAudio", "score", "DT", "pause");
     if (temp_audio !== null) {
       temp_audio.pause();
       setFlag(!false);
@@ -82,11 +82,11 @@ function Score() {
   };
 
   const newSentence = () => {
-    interactCall("newSentence", "score","DT", "");
+    interactCall("newSentence", "score", "DT", "");
     navigate(-1);
   };
   const trySameSentence = () => {
-    interactCall("trySameSentence", "score","DT", "");
+    interactCall("trySameSentence", "score", "DT", "");
     localStorage.setItem('trysame', 'yes');
     navigate(-1);
   };
@@ -337,12 +337,13 @@ function Score() {
   }
 
   const send = score => {
+    console.log("🚀 ~ send ~ score:", score)
     const currentScore = (score / 100).toPrecision(2);
     if (window && window.parent) {
       window.parent.postMessage({
         score: currentScore,
         message: 'all-app-score',
-      });
+      },'*');
     }
   };
 
