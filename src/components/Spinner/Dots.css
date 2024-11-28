@@ -49,7 +49,7 @@
 #loadingmsg {
   position: fixed;
   top: 40%;
-  left: 45%;
+  left: 27%;
   z-index: 9999;
 }
 
@@ -57,7 +57,7 @@
   #loadingmsg {
     position: fixed;
     top: 40%;
-    left: 48%;
+    left: 43%;
     z-index: 9999;
   }
 }

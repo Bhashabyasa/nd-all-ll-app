@@ -313,7 +313,7 @@ function Score() {
                 isHideNavigation={true}
               />
             </div>
-            <div>
+            <div style={{ marginTop: '20px' }}>
               <center>
                 {testResult}
                 {/* <br />

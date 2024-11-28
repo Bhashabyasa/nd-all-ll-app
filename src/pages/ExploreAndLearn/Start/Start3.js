@@ -105,12 +105,12 @@ function Start3() {
 
             if (sentenceFromUrl === 'true') {
               console.log('heresentence');
-              
+
               localStorage.setItem('apphomelevel', 'Sentence');
               set_sel_level('Sentence');
             } else if (sentenceFromUrl === 'false') {
               console.log('hereWord');
-              
+
               localStorage.setItem('apphomelevel', 'Word');
               set_sel_level('Word');
             }
@@ -164,7 +164,7 @@ function Start3() {
                 <div className="col s12">
                   <center>
                     <div className="lang_select_div">
-                      <div className="col s6">
+                      <div className="col s6" style={{ padding: 0 }}>
                         <div
                           className={
                             sel_lang === 'en'
@@ -181,7 +181,7 @@ function Start3() {
                           {getLanguageConstants('en').HOME_TRY_IN}
                         </div>
                       </div>
-                      <div className="col s6">
+                      <div className="col s6" style={{ padding: 0 }}>
                         <div
                           className={
                             sel_lang === myCurrectLanguage
