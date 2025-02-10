@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "cd ",
+    "site": "nd-all-ll-app",
     "public": "build",
     "ignore": [
       "firebase.json",
